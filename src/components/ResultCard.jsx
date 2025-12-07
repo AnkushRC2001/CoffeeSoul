@@ -16,7 +16,7 @@ const ResultCard = ({ result, onReset }) => {
             </h1>
 
             {/* Split Layout */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px', textAlign: 'left', marginBottom: '40px' }}>
+            <div className="result-card-grid">
 
                 {/* Left: Bean & Map */}
                 <div className="card" style={{ background: 'white', padding: '30px', borderRadius: '20px', boxShadow: 'var(--shadow)' }}>

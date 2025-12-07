@@ -40,3 +40,17 @@
 .read-the-docs {
   color: #888;
 }
+
+.result-card-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  text-align: left;
+  margin-bottom: 40px;
+}
+
+@media (max-width: 768px) {
+  .result-card-grid {
+    grid-template-columns: 1fr;
+  }
+}
