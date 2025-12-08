@@ -3,6 +3,7 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  width: 100%;
 }
 
 .logo {
@@ -11,9 +12,11 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -22,6 +25,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -35,6 +39,81 @@
 
 .card {
   padding: 2em;
+}
+
+/* Card Deck Styles */
+.card-stack {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  height: 600px;
+  /* Fixed height for stacking */
+  margin: 0 auto;
+  perspective: 1000px;
+}
+
+.card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  transform-origin: center bottom;
+  overflow-y: auto;
+  /* Handle long content */
+}
+
+/* The active card on top */
+.card.active {
+  z-index: 2;
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+
+/* The next card waiting behind */
+.card.next {
+  z-index: 1;
+  transform: scale(0.95) translateY(20px);
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+/* Animation for discarding the active card */
+.card.discard-left {
+  transform: translateX(-120%) rotate(-20deg);
+  opacity: 0;
+}
+
+.card.discard-right {
+  transform: translateX(120%) rotate(20deg);
+  opacity: 0;
+}
+
+.bean-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.personality-badge {
+  background: var(--accent-color);
+  color: white;
+  padding: 5px 15px;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  display: inline-block;
+  margin-bottom: 10px;
 }
 
 .read-the-docs {

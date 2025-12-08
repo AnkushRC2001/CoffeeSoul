@@ -1,76 +1,130 @@
-import React from 'react';
-import CoffeeMap from './CoffeeMap';
+import React, { useState } from 'react';
 
 const ResultCard = ({ result, onReset }) => {
-    if (!result) return null;
     const { bean, brew } = result;
+    const [activeCard, setActiveCard] = useState(0);
 
-    return (
-        <div className="result-container fade-in" style={{ maxWidth: '900px', margin: '0 auto', padding: '40px 20px', textAlign: 'center' }}>
-            <h3 style={{ color: 'var(--secondary-color)', textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', marginBottom: '10px' }}>
-                Your Perfect Cup
-            </h3>
+    const handleNext = () => {
+        setActiveCard(prev => prev + 1);
+    };
 
-            <h1 style={{ fontSize: '2.5rem', marginBottom: '40px', color: 'var(--dark-color)' }}>
-                {bean.name} <span style={{ opacity: 0.5, fontSize: '0.8em' }}>x</span> {brew.name}
-            </h1>
+    const cards = [
+        // Card 1: The Bean & Personality
+        {
+            id: 'bean-card',
+            content: (
+                <>
+                    <div className="personality-badge">YOUR COFFEE SOUL</div>
+                    <h2 style={{ fontSize: '2rem', marginBottom: '10px' }}>{bean.personalityHeadline}</h2>
 
-            {/* Split Layout */}
-            <div className="result-card-grid">
+                    {/* Bean Image */}
+                    <img src={bean.image} alt={bean.name} className="bean-image" />
 
-                {/* Left: Bean & Map */}
-                <div className="card" style={{ background: 'white', padding: '30px', borderRadius: '20px', boxShadow: 'var(--shadow)' }}>
-                    <div style={{ marginBottom: '20px', textAlign: 'center' }}>
-                        <CoffeeMap result={bean} />
-                    </div>
+                    <h3 style={{ color: 'var(--accent-color)', marginBottom: '5px' }}>{bean.name}</h3>
+                    <p style={{ fontSize: '0.9rem', color: '#666', marginBottom: '15px' }}>{bean.region}</p>
 
-                    <h2 style={{ fontSize: '1.5rem', marginBottom: '10px', color: 'var(--dark-color)' }}>{bean.vibe}</h2>
-                    <p style={{ color: 'var(--text-color)', marginBottom: '20px' }}>{bean.description}</p>
+                    <p style={{ fontSize: '1rem', lineHeight: '1.5', marginBottom: '20px' }}>
+                        {bean.personalityDescription}
+                    </p>
 
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '20px' }}>
-                        {bean.tags.slice(0, 4).map(tag => (
-                            <span key={tag} style={{ background: '#FDFBF7', padding: '5px 10px', borderRadius: '15px', fontSize: '0.8rem', border: '1px solid #E5E5E5' }}>#{tag}</span>
+                    <div className="tags" style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '20px', justifyContent: 'center' }}>
+                        {bean.tags.slice(0, 5).map(tag => (
+                            <span key={tag} style={{ background: '#F5F5F5', padding: '5px 12px', borderRadius: '20px', fontSize: '0.8rem', color: '#666' }}>
+                                #{tag}
+                            </span>
                         ))}
                     </div>
 
-                    <div style={{ padding: '15px', background: '#F9F9F9', borderRadius: '10px' }}>
-                        <h4 style={{ margin: '0 0 10px 0', fontSize: '0.9rem' }}>Growing Region</h4>
-                        <strong style={{ color: 'var(--accent-color)' }}>{bean.region}</strong>
-                    </div>
-                </div>
+                    <button
+                        className="btn-primary"
+                        onClick={handleNext}
+                        style={{
+                            marginTop: 'auto',
+                            background: 'var(--dark-color)',
+                            color: 'white',
+                            padding: '15px 30px',
+                            borderRadius: '50px',
+                            border: 'none',
+                            fontSize: '1rem',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '10px',
+                            margin: '0 auto'
+                        }}
+                    >
+                        Reveal Your Brew <span>→</span>
+                    </button>
+                </>
+            )
+        },
+        // Card 2: The Brew Method
+        {
+            id: 'brew-card',
+            content: (
+                <>
+                    <div className="personality-badge" style={{ background: 'var(--secondary-color)' }}>PERFECT PAIRING</div>
+                    <h2 style={{ fontSize: '2rem', marginBottom: '20px' }}>{brew.name}</h2>
 
-                {/* Right: Brew & Recipe */}
-                <div className="card" style={{ background: 'white', padding: '30px', borderRadius: '20px', boxShadow: 'var(--shadow)' }}>
-                    <h2 style={{ fontSize: '1.5rem', marginBottom: '10px', color: 'var(--dark-color)' }}>The Brew: {brew.name}</h2>
-                    <p style={{ color: 'var(--text-color)', marginBottom: '20px' }}>{brew.description}</p>
+                    <p style={{ marginBottom: '20px', color: '#555' }}>
+                        {brew.description}
+                    </p>
 
-                    <div style={{ background: '#FFF8F0', padding: '20px', borderRadius: '15px', border: '1px dashed var(--accent-color)' }}>
-                        <h3 style={{ margin: '0 0 15px 0', fontSize: '1.1rem', color: 'var(--dark-color)' }}>📝 How to Make It</h3>
-                        <ol style={{ paddingLeft: '20px', margin: 0, color: 'var(--text-color)', lineHeight: '1.6' }}>
-                            {brew.recipe.map((step, index) => (
-                                <li key={index} style={{ marginBottom: '8px' }}>{step}</li>
+                    <div style={{ textAlign: 'left', background: '#FFF8F0', padding: '20px', borderRadius: '15px', width: '100%', marginBottom: '20px' }}>
+                        <h4 style={{ marginBottom: '15px', color: 'var(--dark-color)' }}>📝 How to brew:</h4>
+                        <ul style={{ paddingLeft: '20px', margin: 0 }}>
+                            {brew.recipe.map((step, i) => (
+                                <li key={i} style={{ marginBottom: '10px', color: '#444' }}>{step}</li>
                             ))}
-                        </ol>
+                        </ul>
                     </div>
-                </div>
-            </div>
 
-            <button
-                onClick={onReset}
-                style={{
-                    background: 'var(--dark-color)',
-                    color: 'white',
-                    padding: '15px 40px',
-                    borderRadius: '30px',
-                    fontSize: '1rem',
-                    fontWeight: '600',
-                    border: 'none',
-                    cursor: 'pointer',
-                    boxShadow: '0 5px 15px rgba(0,0,0,0.2)'
-                }}
-            >
-                Start Over
-            </button>
+                    <button
+                        onClick={onReset}
+                        style={{
+                            marginTop: 'auto',
+                            background: 'transparent',
+                            color: 'var(--dark-color)',
+                            padding: '12px 30px',
+                            borderRadius: '50px',
+                            border: '2px solid var(--dark-color)',
+                            fontSize: '1rem',
+                            fontWeight: 'bold',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '10px',
+                            margin: '0 auto'
+                        }}
+                    >
+                        Start Over <span>↻</span>
+                    </button>
+                </>
+            )
+        }
+    ];
+
+    return (
+        <div className="result-container fade-in" style={{ padding: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '70vh' }}>
+            <div className="card-stack">
+                {cards.map((card, index) => {
+                    let className = 'card';
+                    if (index === activeCard) className += ' active';
+                    else if (index === activeCard + 1) className += ' next';
+                    else if (index < activeCard) className += ' discard-left';
+
+                    // Cards further back shouldn't be visible/interactive
+                    if (index > activeCard + 1) return null;
+
+                    return (
+                        <div key={card.id} className={className}>
+                            {card.content}
+                        </div>
+                    );
+                })}
+            </div>
         </div>
     );
 };

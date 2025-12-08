@@ -1,4 +1,10 @@
 // Bean Data with Map Coordinates (Approximate for visual map)
+import monsoonedImg from '../assets/beans/monsooned_malabar.svg';
+import mysoreImg from '../assets/beans/mysore_nuggets.svg';
+import robustaImg from '../assets/beans/wayanad_robusta.svg';
+import arakuImg from '../assets/beans/araku_valley.svg';
+import coorgImg from '../assets/beans/coorg_arabica.svg';
+
 export const beans = [
   {
     id: 'monsooned-malabar',
@@ -8,7 +14,10 @@ export const beans = [
     roast: 'Medium',
     flavor: 'Earthy, Spicy, Mellow',
     description: "A unique coffee exposed to monsoon winds. Low acidity, heavy body, and a distinct earthy flavor.",
-    tags: ['monsoon', 'spicy', 'heavy', 'rainy', 'calm', 'thick', 'earthy', 'thoughts'],
+    tags: ['monsoon', 'spicy', 'heavy', 'rainy', 'calm', 'thick', 'earthy', 'thoughts', 'history', 'quiet', 'vintage'],
+    image: monsoonedImg,
+    personalityHeadline: "The Old Soul",
+    personalityDescription: "You find comfort in tradition and depth. Like the Monsooned Malabar, you've weathered storms and come out with a rich, mellow character. You appreciate the slow lane, history, and meaningful silences.",
     facts: [
       "Created by accident when beans transported by sea swelled due to humidity.",
       "Has Geographical Indication (GI) status.",
@@ -23,7 +32,10 @@ export const beans = [
     roast: 'Medium-Dark',
     flavor: 'Chocolaty, Smooth, Hints of Spice',
     description: "The 'Gold Nuggets' of Indian Arabica. Large, premium beans with a rich, full-bodied cup.",
-    tags: ['focus', 'chocolaty', 'smooth', 'morning', 'productive', 'rich', 'deadline', 'strong'],
+    tags: ['focus', 'chocolaty', 'smooth', 'morning', 'productive', 'rich', 'deadline', 'strong', 'ambition', 'quality', 'minimalist'],
+    image: mysoreImg,
+    personalityHeadline: "The High Achiever",
+    personalityDescription: "Excellence is your baseline. You're polished, reliable, and maybe a bit of a perfectionist. Like the Mysore Nuggets, you stand out by being the best version of yourself, ready to conquer any challenge.",
     facts: [
       "Represents the highest grade of washed Arabica from India.",
       "Grown in the Baba Budan Giri hills.",
@@ -38,7 +50,10 @@ export const beans = [
     roast: 'Dark',
     flavor: 'Bold, Intense, Grainy',
     description: "High caffeine, strong body. The backbone of traditional South Indian Filter Coffee.",
-    tags: ['energy', 'bitter', 'punchy', 'traditional', 'awake', 'strong', 'traffic', 'fritters', 'thick'],
+    tags: ['energy', 'bitter', 'punchy', 'traditional', 'awake', 'strong', 'traffic', 'fritters', 'thick', 'intensity', 'gym', 'social'],
+    image: robustaImg,
+    personalityHeadline: "The Powerhouse",
+    personalityDescription: "You are a force of nature. Resilient, energetic, and unpretentious. Like the Robusta, you pack a punch and keep going when others fade. You don't need nuances; you need results.",
     facts: [
       "Wayanad produces some of the finest soft Robusta in the world.",
       "Contains almost double the caffeine of Arabica.",
@@ -53,7 +68,10 @@ export const beans = [
     roast: 'Light-Medium',
     flavor: 'Fruity, Citrus, Caramel',
     description: "Award-winning coffee known for its complex flavor profile and sustainable cultivation.",
-    tags: ['creative', 'fruity', 'light', 'afternoon', 'inspired', 'tea-like', 'sketchbook', 'tart', 'rich'],
+    tags: ['creative', 'fruity', 'light', 'afternoon', 'inspired', 'tea-like', 'sketchbook', 'tart', 'rich', 'dream', 'art', 'boho'],
+    image: arakuImg,
+    personalityHeadline: "The Dreamer",
+    personalityDescription: "You see the world in technicolor. Sensitive, artistic, and open-minded. Like the Araku Valley bean, you are complex and thrive in organic, natural environments. You bring a fresh perspective to everything.",
     facts: [
       "Grown by tribal farmers in the Eastern Ghats.",
       "Often wins international cupping competitions.",
@@ -68,7 +86,10 @@ export const beans = [
     roast: 'Medium',
     flavor: 'Balanced, Blue Berry, Toast',
     description: "Grown under the shade of rainforest trees, offering a sweet and balanced cup.",
-    tags: ['calm', 'sweet', 'smooth', 'rainy', 'comfort', 'monsoon'],
+    tags: ['calm', 'sweet', 'smooth', 'rainy', 'comfort', 'monsoon', 'nature', 'balance', 'outdoors'],
+    image: coorgImg,
+    personalityHeadline: "The Naturalist",
+    personalityDescription: "Balance is your mantra. You are grounded, friendly, and deeply connected to your environment. Like Coorg Arabica, you are sweet-natured and thrive in harmony with others. You are a breath of fresh air.",
     facts: [
       "Coorg is known as the 'Coffee Cup of India'.",
       "Grown in biodiversity hotspots.",
@@ -244,6 +265,46 @@ export const questions = [
       { text: "Rich", value: "rich" },
       { text: "Complex", value: "light" },
       { text: "Strong", value: "strong" }
+    ]
+  },
+  {
+    id: 11,
+    text: "It's a free Sunday. What's the plan?",
+    options: [
+      { text: "Museum hop or specific history walk", value: "history" },
+      { text: "Planning the week & side hustle", value: "ambition" },
+      { text: "High-intensity workout or sport", value: "gym" },
+      { text: "Painting or writing in a park", value: "art" }
+    ]
+  },
+  {
+    id: 12,
+    text: "Your friend cancels plans last minute. You...",
+    options: [
+      { text: "Love it. Finally some quiet time.", value: "quiet" },
+      { text: "Use the extra time to engage work.", value: "quality" },
+      { text: "Call someone else immediately.", value: "social" },
+      { text: "Daydream and listen to music.", value: "dream" }
+    ]
+  },
+  {
+    id: 13,
+    text: "Pick a workspace aesthetic.",
+    options: [
+      { text: "Vintage library, lots of wood", value: "vintage" },
+      { text: "Minimalist, high-tech, glass", value: "minimalist" },
+      { text: "Busy cafe, noise, energy", value: "intensity" },
+      { text: "Boho, plants, colorful art", value: "boho" }
+    ]
+  },
+  {
+    id: 14,
+    text: "How do you handle stress?",
+    options: [
+      { text: "Retreat and reflect", value: "thoughts" },
+      { text: "Make a list and tackle it", value: "productive" },
+      { text: "Burn it off with activity", value: "energy" },
+      { text: "Go for a walk in nature", value: "nature" }
     ]
   }
 ];
