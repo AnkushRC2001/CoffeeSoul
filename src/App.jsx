@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Quiz from './components/Quiz';
 import ResultCard from './components/ResultCard';
 import { beans, brewMethods } from './data/coffeeData';
+import './App.css';
 
 function App() {
   const [gameState, setGameState] = useState('home'); // home, quiz, result

@@ -1,110 +1,197 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import html2canvas from 'html2canvas';
+import CoffeeMap from './CoffeeMap';
 
 const ResultCard = ({ result, onReset }) => {
     const { bean, brew } = result;
     const [activeIndex, setActiveIndex] = useState(0);
+    const summaryRef = useRef(null);
+
+    const handleNext = () => {
+        if (activeIndex < cards.length - 1) {
+            setActiveIndex((prev) => prev + 1);
+        }
+    };
+
+    const handleBackToStart = () => {
+        setActiveIndex(0);
+    };
+
+    const downloadSummary = async () => {
+        if (summaryRef.current) {
+            try {
+                const canvas = await html2canvas(summaryRef.current, {
+                    scale: 2,
+                    backgroundColor: '#FAF9F6',
+                    useCORS: true
+                });
+                const link = document.createElement('a');
+                link.download = `CoffeeSoul_${bean.name.replace(/\s+/g, '_')}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            } catch (err) {
+                console.error("Failed to download summary:", err);
+            }
+        }
+    };
 
     const cards = [
-        // Card 1: The Bean & Personality
+        // Card 1: THE SOUL (Personality)
+        {
+            id: 'soul-card',
+            content: (
+                <>
+                    <div className="card-header">
+                        <span className="suit">♥</span>
+                        <div className="personality-badge">THE SOUL</div>
+                        <span className="suit">♥</span>
+                    </div>
+
+                    <div className="card-center">
+                        <h2 style={{ fontSize: '2.5rem', marginBottom: '10px', fontFamily: 'serif' }}>{bean.personalityHeadline}</h2>
+                        <div className="divider"></div>
+                        <p style={{ fontSize: '1.1rem', lineHeight: '1.6', fontStyle: 'italic', color: '#555' }}>
+                            "{bean.personalityDescription}"
+                        </p>
+                    </div>
+
+                    <div className="card-footer">
+                        <button className="btn-next" onClick={handleNext}>Reveal The Bean →</button>
+                    </div>
+                </>
+            )
+        },
+        // Card 2: THE BEAN (Details)
         {
             id: 'bean-card',
             content: (
                 <>
-                    <div className="personality-badge">YOUR COFFEE SOUL</div>
-                    <h2 style={{ fontSize: '2rem', marginBottom: '10px' }}>{bean.personalityHeadline}</h2>
-
-                    {/* Bean Image */}
-                    <img src={bean.image} alt={bean.name} className="bean-image" />
-
-                    <h3 style={{ color: 'var(--accent-color)', marginBottom: '5px' }}>{bean.name}</h3>
-                    <p style={{ fontSize: '0.9rem', color: '#666', marginBottom: '15px' }}>{bean.region}</p>
-
-                    <p style={{ fontSize: '1rem', lineHeight: '1.5', marginBottom: '20px' }}>
-                        {bean.personalityDescription}
-                    </p>
-
-                    <div className="tags" style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '20px', justifyContent: 'center' }}>
-                        {bean.tags.slice(0, 5).map(tag => (
-                            <span key={tag} style={{ background: '#F5F5F5', padding: '5px 12px', borderRadius: '20px', fontSize: '0.8rem', color: '#666' }}>
-                                #{tag}
-                            </span>
-                        ))}
+                    <div className="card-header">
+                        <span className="suit">♦</span>
+                        <div className="personality-badge">THE BEAN</div>
+                        <span className="suit">♦</span>
                     </div>
 
-                    <button
-                        className="btn-primary"
-                        onClick={() => setActiveIndex((prev) => (prev + 1) % 2)}
-                        style={{
-                            marginTop: 'auto',
-                            background: 'var(--dark-color)',
-                            color: 'white',
-                            padding: '15px 30px',
-                            borderRadius: '50px',
-                            border: 'none',
-                            fontSize: '1rem',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            gap: '10px',
-                            margin: '0 auto'
-                        }}
-                    >
-                        Reveal Your Brew <span>→</span>
-                    </button>
+                    <div className="card-center">
+                        <img src={bean.image} alt={bean.name} className="bean-image-lg" />
+                        <h3 style={{ fontSize: '1.5rem', color: 'var(--dark-color)', marginTop: '15px' }}>{bean.name}</h3>
+                        <p style={{ color: '#666', fontSize: '0.9rem' }}>{bean.region}</p>
+
+                        <div className="tags-row">
+                            {bean.tags.slice(0, 3).map(tag => (
+                                <span key={tag} className="tag">#{tag}</span>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="card-footer">
+                        <button className="btn-next" onClick={handleNext}>See Origin →</button>
+                    </div>
                 </>
             )
         },
-        // Card 2: The Brew Method
+        // Card 3: THE ORIGIN (Map)
+        {
+            id: 'map-card',
+            content: (
+                <>
+                    <div className="card-header">
+                        <span className="suit">♣</span>
+                        <div className="personality-badge">THE ORIGIN</div>
+                        <span className="suit">♣</span>
+                    </div>
+
+                    <div className="card-center" style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <div style={{ width: '100%', height: '300px', pointerEvents: 'none' }}>
+                            <CoffeeMap result={bean} />
+                        </div>
+                        <p style={{ marginTop: '10px', fontSize: '0.9rem', color: '#666' }}>
+                            Grown in <strong>{bean.region}</strong>
+                        </p>
+                    </div>
+
+                    <div className="card-footer">
+                        <button className="btn-next" onClick={handleNext}>How to Brew →</button>
+                    </div>
+                </>
+            )
+        },
+        // Card 4: THE BREW (Recipe)
         {
             id: 'brew-card',
             content: (
                 <>
-                    <div className="personality-badge" style={{ background: 'var(--secondary-color)' }}>PERFECT PAIRING</div>
-                    <h2 style={{ fontSize: '2rem', marginBottom: '20px' }}>{brew.name}</h2>
-
-                    <p style={{ marginBottom: '20px', color: '#555' }}>
-                        {brew.description}
-                    </p>
-
-                    <div style={{ textAlign: 'left', background: '#FFF8F0', padding: '20px', borderRadius: '15px', width: '100%', marginBottom: '20px' }}>
-                        <h4 style={{ marginBottom: '15px', color: 'var(--dark-color)' }}>📝 How to brew:</h4>
-                        <ul style={{ paddingLeft: '20px', margin: 0 }}>
-                            {brew.recipe.map((step, i) => (
-                                <li key={i} style={{ marginBottom: '10px', color: '#444' }}>{step}</li>
-                            ))}
-                        </ul>
+                    <div className="card-header">
+                        <span className="suit">♠</span>
+                        <div className="personality-badge">THE BREW</div>
+                        <span className="suit">♠</span>
                     </div>
 
-                    <div style={{ display: 'flex', gap: '10px', marginTop: 'auto', justifyContent: 'center', width: '100%' }}>
-                        <button
-                            onClick={() => setActiveIndex((prev) => (prev + 1) % 2)}
-                            style={{
-                                background: 'var(--dark-color)',
-                                color: 'white',
-                                padding: '12px 25px',
-                                borderRadius: '50px',
-                                border: 'none',
-                                fontSize: '1rem',
-                                cursor: 'pointer'
-                            }}
-                        >
-                            See Bean Again <span>↩</span>
+                    <div className="card-center" style={{ alignItems: 'flex-start', textAlign: 'left', padding: '0 10px' }}>
+                        <h2 style={{ fontSize: '1.8rem', marginBottom: '5px' }}>{brew.name}</h2>
+                        <p style={{ fontSize: '0.9rem', color: '#666', marginBottom: '20px' }}>{brew.description}</p>
+
+                        <div className="recipe-box">
+                            {brew.recipe.map((step, i) => (
+                                <div key={i} className="recipe-step">
+                                    <span className="step-num">{i + 1}</span>
+                                    <p>{step}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="card-footer">
+                        <button className="btn-next" onClick={handleNext}>Your Passport →</button>
+                    </div>
+                </>
+            )
+        },
+        // Card 5: SUMMARY (Passport)
+        {
+            id: 'summary-card',
+            content: (
+                <>
+                    <div ref={summaryRef} className="passport-content">
+                        <div className="passport-header">
+                            <h2>COFFEE SOUL PASSPORT</h2>
+                            <p className="date">{new Date().toLocaleDateString()}</p>
+                        </div>
+
+                        <div className="passport-body">
+                            <div className="passport-row">
+                                <span className="label">SOUL TYPE</span>
+                                <span className="value">{bean.personalityHeadline}</span>
+                            </div>
+                            <div className="passport-row">
+                                <span className="label">BEAN</span>
+                                <span className="value">{bean.name}</span>
+                            </div>
+                            <div className="passport-row">
+                                <span className="label">METHOD</span>
+                                <span className="value">{brew.name}</span>
+                            </div>
+                            <div className="passport-quote">
+                                "{bean.personalityDescription.split('.')[0]}."
+                            </div>
+                        </div>
+
+                        <div className="passport-stamp">
+                            <div className="stamp-circle">
+                                <span>VERIFIED</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="card-footer full-width">
+                        <button className="btn-download" onClick={downloadSummary}>
+                            Download Passport ↓
                         </button>
-                        <button
-                            onClick={onReset}
-                            style={{
-                                background: 'transparent',
-                                color: 'var(--dark-color)',
-                                padding: '12px 25px',
-                                borderRadius: '50px',
-                                border: '2px solid var(--dark-color)',
-                                fontSize: '1rem',
-                                fontWeight: 'bold',
-                                cursor: 'pointer'
-                            }}
-                        >
-                            Start Over <span>↻</span>
+                        <button className="btn-reset" onClick={onReset}>
+                            Start New Journey ↻
+                        </button>
+                        <button className="btn-link" onClick={handleBackToStart} style={{ fontSize: '0.8rem', marginTop: '10px', textDecoration: 'underline', border: 'none', background: 'none', cursor: 'pointer' }}>
+                            Review Journey (Back to Start)
                         </button>
                     </div>
                 </>
@@ -113,20 +200,38 @@ const ResultCard = ({ result, onReset }) => {
     ];
 
     return (
-        <div className="result-container fade-in" style={{ padding: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '70vh' }}>
+        <div className="result-container fade-in">
             <div className="card-stack">
                 {cards.map((card, index) => {
-                    let className = 'card';
-                    const isCardActive = index === activeIndex;
+                    // Calculate visual order: 0 for active, 1 for next, etc.
+                    const offset = (index - activeIndex + cards.length) % cards.length;
 
-                    if (isCardActive) {
+                    // Z-index: Active (0) highest, then decreasing
+                    const zIndex = cards.length - offset;
+
+                    // Scale: Active is 1, others slightly smaller to create depth
+                    const scale = offset === 0 ? 1 : 0.95 - (offset * 0.01);
+
+                    // TranslateY: Create a slight vertical stack effect
+                    const translateY = offset === 0 ? 0 : offset * 2; // px
+
+                    let className = 'card playing-card';
+                    if (offset === 0) {
                         className += ' active';
                     } else {
                         className += ' next';
                     }
 
                     return (
-                        <div key={card.id} className={className}>
+                        <div
+                            key={card.id}
+                            className={className}
+                            style={{
+                                zIndex: zIndex,
+                                transform: `scale(${scale}) translateY(${translateY}px)`,
+                                transition: 'all 0.5s ease'
+                            }}
+                        >
                             {card.content}
                         </div>
                     );

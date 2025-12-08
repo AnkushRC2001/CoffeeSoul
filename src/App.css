@@ -44,10 +44,10 @@
 /* Card Deck Styles */
 .card-stack {
   position: relative;
-  width: 100%;
-  max-width: 500px;
-  height: 600px;
-  /* Fixed height for stacking */
+  width: 320px;
+  /* Playing card width */
+  height: 500px;
+  /* Playing card height */
   margin: 0 auto;
   perspective: 1000px;
 }
@@ -60,60 +60,362 @@
   height: 100%;
   background: white;
   border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
   transform-origin: center bottom;
-  overflow-y: auto;
-  /* Handle long content */
+  overflow: hidden;
+  /* Clean borders */
+  backface-visibility: hidden;
+  border: 4px solid white;
+  /* Frame */
 }
 
-/* The active card on top */
-.card.active {
-  z-index: 2;
-  transform: scale(1) translateY(0);
-  opacity: 1;
+/* Playing Card Aesthetic */
+.playing-card {
+  background: #FAF9F6;
+  /* Off-white paper */
+  outline: 1px solid #E0E0E0;
 }
 
-/* The next card waiting behind */
-.card.next {
-  z-index: 1;
-  transform: scale(0.95) translateY(20px);
-  opacity: 0.8;
-  pointer-events: none;
-}
-
-/* Animation for discarding the active card */
-.card.discard-left {
-  transform: translateX(-120%) rotate(-20deg);
-  opacity: 0;
-}
-
-.card.discard-right {
-  transform: translateX(120%) rotate(20deg);
-  opacity: 0;
-}
-
-.bean-image {
+/* --- Playing Card Enhancements --- */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 12px;
-  margin-bottom: 20px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .personality-badge {
+  /* Removed background color and padding for clean text look */
+  background: transparent;
+  color: var(--dark-color, #333);
+  font-family: 'Outfit', sans-serif;
+  /* Match site font */
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.suit {
+  font-size: 1.4rem;
+  opacity: 0.6;
+}
+
+.card-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  /* Changed from center to allow better spacing */
+  align-items: center;
+  text-align: center;
+  padding: 10px 0;
+  width: 100%;
+  overflow-y: auto;
+  /* Allow scrolling if content is too long */
+}
+
+/* Hide scrollbar for cleaner look */
+.card-center::-webkit-scrollbar {
+  width: 4px;
+}
+
+.card-center::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+.divider {
+  width: 40px;
+  height: 2px;
+  background: var(--primary-color);
+  margin: 15px auto;
+}
+
+.bean-image-lg {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #fff;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
+}
+
+.tags-row {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 15px;
+  flex-wrap: wrap;
+  /* Ensure tags wrap if needed */
+}
+
+.tag {
+  background: #f0f0f0;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  color: #666;
+  font-weight: 500;
+}
+
+/* Recipe specific tweaks */
+.recipe-box {
+  width: 100%;
+  text-align: left;
+  margin-top: 10px;
+  background: #fafafa;
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px dashed rgba(0, 0, 0, 0.1);
+  font-size: 0.85rem;
+  max-height: 200px;
+  /* Limit height to prevent overflow of card */
+  overflow-y: auto;
+  /* Scrollable recipe */
+}
+
+.recipe-step {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.step-num {
+  background: var(--primary-color);
+  color: #fff;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  flex-shrink: 0;
+}
+
+/* Card Header was here, now moved and updated above */
+/* .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  color: var(--accent-color);
+} */
+
+/* Card Center was here, now moved and updated above */
+/* .card-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+} */
+
+.card-footer {
+  margin-top: auto;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.full-width {
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Suit was here, now moved and updated above */
+/* .suit {
+  opacity: 0.5;
+} */
+
+/* Bean Image LG was here, now moved and updated above */
+/* .bean-image-lg {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 50%;
+  /* Circle image */
+/* margin-bottom: 15px;
+  border: 3px solid white;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+} */
+
+/* Divider was here, now moved and updated above */
+/* .divider {
+  width: 50px;
+  height: 2px;
   background: var(--accent-color);
+  margin: 15px auto;
+} */
+
+/* Passport Summary Styles */
+.passport-content {
+  width: 100%;
+  height: 100%;
+  background: #FAF9F6;
+  border: 2px solid var(--dark-color);
+  padding: 15px;
+  position: relative;
+  overflow: hidden;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+}
+
+.passport-header {
+  border-bottom: 2px solid var(--dark-color);
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.passport-header h2 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: var(--dark-color);
+  margin: 0;
+}
+
+.passport-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  border-bottom: 1px dashed #CCC;
+  padding-bottom: 5px;
+}
+
+.passport-row .label {
+  font-size: 0.7rem;
+  color: #888;
+  letter-spacing: 1px;
+}
+
+.passport-row .value {
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--dark-color);
+}
+
+.passport-stamp {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  transform: rotate(-15deg);
+  opacity: 0.7;
+}
+
+.stamp-circle {
+  width: 80px;
+  height: 80px;
+  border: 3px double var(--secondary-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--secondary-color);
+  font-weight: bold;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+/* Animations */
+@keyframes dealCard {
+  0% {
+    transform: translateY(100vh) rotate(10deg);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0) rotate(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  0% {
+    transform: translateX(0) scale(1);
+    z-index: 2;
+  }
+
+  50% {
+    transform: translateX(-120%) rotate(-10deg) scale(0.9);
+    z-index: 2;
+  }
+
+  51% {
+    z-index: 0;
+  }
+
+  100% {
+    transform: translateX(0) scale(0.95) rotate(0);
+    z-index: 0;
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    transform: scale(0.95);
+    z-index: 0;
+    opacity: 0.8;
+  }
+
+  100% {
+    transform: scale(1);
+    z-index: 1;
+    opacity: 1;
+  }
+}
+
+.card.active {
+  /* z-index and transform handled by JS */
+  /* animation: slideIn 0.5s ease forwards; */
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.card.next {
+  /* z-index handled by JS */
+  opacity: 1;
+  /* Let JS handle opacity if needed, or keep full opacity for stack */
+  background: #fdfdfd;
+}
+
+/* When cycling, the active card becomes 'previous' momentarily, needing animation logic.
+   This simple active/next toggle relies on React state update causing re-render. 
+   Ideally, we'd have exit animations, but for this quick prototype, instant z-index swap with 'slideIn' on active works well enough.
+*/
+
+.btn-next,
+.btn-download {
+  background: var(--dark-color);
   color: white;
-  padding: 5px 15px;
+  border: none;
+  padding: 12px 25px;
   border-radius: 50px;
   font-size: 0.9rem;
-  font-weight: bold;
-  display: inline-block;
-  margin-bottom: 10px;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+}
+
+.btn-reset {
+  background: transparent;
+  color: var(--dark-color);
+  border: 2px solid var(--dark-color);
+  padding: 10px 25px;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-top: 10px;
 }
 
 .read-the-docs {
