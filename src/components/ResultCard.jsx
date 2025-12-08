@@ -6,6 +6,7 @@ const ResultCard = ({ result, onReset }) => {
     const { bean, brew } = result;
     const [activeIndex, setActiveIndex] = useState(0);
     const summaryRef = useRef(null);
+    const downloadRef = useRef(null);
 
     const handleNext = () => {
         if (activeIndex < cards.length - 1) {
@@ -18,9 +19,9 @@ const ResultCard = ({ result, onReset }) => {
     };
 
     const downloadSummary = async () => {
-        if (summaryRef.current) {
+        if (downloadRef.current) {
             try {
-                const canvas = await html2canvas(summaryRef.current, {
+                const canvas = await html2canvas(downloadRef.current, {
                     scale: 2,
                     backgroundColor: '#FAF9F6',
                     useCORS: true
@@ -201,6 +202,39 @@ const ResultCard = ({ result, onReset }) => {
 
     return (
         <div className="result-container fade-in">
+            {/* --- Hidden Export Card --- */}
+            <div ref={downloadRef} className="passport-export-card">
+                <div className="export-header">
+                    <div className="export-brand">CoffeeSoul</div>
+                    <div className="export-title">Official Passport</div>
+                </div>
+
+                <div className="export-body">
+                    <div className="export-image-container">
+                        <img src={bean.image} alt={bean.name} className="export-bean-image" crossOrigin="anonymous" />
+                    </div>
+                    <div className="export-details">
+                        <div className="export-row">
+                            <span className="export-label">Identity</span>
+                            <span className="export-value">{bean.personalityHeadline}</span>
+                        </div>
+                        <div className="export-row">
+                            <span className="export-label">Origin</span>
+                            <span className="export-value">{bean.region}</span>
+                        </div>
+                        <div className="export-row">
+                            <span className="export-label">Brew</span>
+                            <span className="export-value">{brew.name}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="export-footer">
+                    <span className="export-date">Issued: {new Date().toLocaleDateString()}</span>
+                    <div className="export-stamp">ACCEPTED</div>
+                </div>
+            </div>
+
             <div className="card-stack">
                 {cards.map((card, index) => {
                     // Calculate visual order: 0 for active, 1 for next, etc.
