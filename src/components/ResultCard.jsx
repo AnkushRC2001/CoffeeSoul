@@ -2,11 +2,7 @@ import React, { useState } from 'react';
 
 const ResultCard = ({ result, onReset }) => {
     const { bean, brew } = result;
-    const [activeCard, setActiveCard] = useState(0);
-
-    const handleNext = () => {
-        setActiveCard(prev => prev + 1);
-    };
+    const [activeIndex, setActiveIndex] = useState(0);
 
     const cards = [
         // Card 1: The Bean & Personality
@@ -37,7 +33,7 @@ const ResultCard = ({ result, onReset }) => {
 
                     <button
                         className="btn-primary"
-                        onClick={handleNext}
+                        onClick={() => setActiveIndex((prev) => (prev + 1) % 2)}
                         style={{
                             marginTop: 'auto',
                             background: 'var(--dark-color)',
@@ -80,27 +76,37 @@ const ResultCard = ({ result, onReset }) => {
                         </ul>
                     </div>
 
-                    <button
-                        onClick={onReset}
-                        style={{
-                            marginTop: 'auto',
-                            background: 'transparent',
-                            color: 'var(--dark-color)',
-                            padding: '12px 30px',
-                            borderRadius: '50px',
-                            border: '2px solid var(--dark-color)',
-                            fontSize: '1rem',
-                            fontWeight: 'bold',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            gap: '10px',
-                            margin: '0 auto'
-                        }}
-                    >
-                        Start Over <span>↻</span>
-                    </button>
+                    <div style={{ display: 'flex', gap: '10px', marginTop: 'auto', justifyContent: 'center', width: '100%' }}>
+                        <button
+                            onClick={() => setActiveIndex((prev) => (prev + 1) % 2)}
+                            style={{
+                                background: 'var(--dark-color)',
+                                color: 'white',
+                                padding: '12px 25px',
+                                borderRadius: '50px',
+                                border: 'none',
+                                fontSize: '1rem',
+                                cursor: 'pointer'
+                            }}
+                        >
+                            See Bean Again <span>↩</span>
+                        </button>
+                        <button
+                            onClick={onReset}
+                            style={{
+                                background: 'transparent',
+                                color: 'var(--dark-color)',
+                                padding: '12px 25px',
+                                borderRadius: '50px',
+                                border: '2px solid var(--dark-color)',
+                                fontSize: '1rem',
+                                fontWeight: 'bold',
+                                cursor: 'pointer'
+                            }}
+                        >
+                            Start Over <span>↻</span>
+                        </button>
+                    </div>
                 </>
             )
         }
@@ -111,12 +117,13 @@ const ResultCard = ({ result, onReset }) => {
             <div className="card-stack">
                 {cards.map((card, index) => {
                     let className = 'card';
-                    if (index === activeCard) className += ' active';
-                    else if (index === activeCard + 1) className += ' next';
-                    else if (index < activeCard) className += ' discard-left';
+                    const isCardActive = index === activeIndex;
 
-                    // Cards further back shouldn't be visible/interactive
-                    if (index > activeCard + 1) return null;
+                    if (isCardActive) {
+                        className += ' active';
+                    } else {
+                        className += ' next';
+                    }
 
                     return (
                         <div key={card.id} className={className}>
